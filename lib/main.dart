@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:recipe_finder/advanced_search_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_finder/search_result_screen.dart';
+import 'package:http/http.dart' as http;
 
 void main() => runApp(MyApp());
 
@@ -13,7 +14,6 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       home: MyHomePage(),
     );
-    
   }
 }
 
@@ -38,6 +38,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    Future<http.Response> searcheByName(String recipeName) {
+      return http.get("https://api.edamam.com/search?q=" +
+          recipeName +
+          "&app_id=bd7ed852&app_key=cab16ce1c8007b3fb8bef286f306426b");
+    }
+
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -129,6 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       top: 15, bottom: 15, left: 10, right: 10),
                                   color: Color.fromRGBO(250, 74, 12, 1),
                                   onPressed: () {
+                                    var response = searcheByName("");
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
