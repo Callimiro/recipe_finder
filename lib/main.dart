@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
       return http.get("https://api.edamam.com/search?q=" +
           recipeName +
           "&app_id=bd7ed852&app_key=cab16ce1c8007b3fb8bef286f306426b");
-      print('this will never be executed');
+
     }
 
     // This method is rerun every time setState is called, for instance as done
@@ -136,7 +136,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                       top: 15, bottom: 15, left: 10, right: 10),
                                   color: Color.fromRGBO(250, 74, 12, 1),
                                   onPressed: () {
-                                    var response = searcheByName("");
+                                    var searchText="";
+                                    var response = searcheByName(searchText);
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
