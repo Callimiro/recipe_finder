@@ -1,25 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_finder/recipe_screen_screen.dart';
+import 'Hit_model.dart';
 
 class SearchResultScreen extends StatefulWidget {
   const SearchResultScreen({
     Key key,
     @required SearchResultBloc searchResultBloc,
+    @required Future<List<Hits>> hits,
+    @required String searchedRecipe,
   })  : _searchResultBloc = searchResultBloc,
+        _hits = hits,
+        _searchedRecipe = searchedRecipe,
         super(key: key);
 
   final SearchResultBloc _searchResultBloc;
+  final Future<List<Hits>> _hits;
+  final String _searchedRecipe;
 
   @override
   SearchResultScreenState createState() {
-    return SearchResultScreenState();
+    return SearchResultScreenState(_searchedRecipe, _hits);
   }
 }
 
 class SearchResultBloc {}
 
 class SearchResultScreenState extends State<SearchResultScreen> {
-  SearchResultScreenState();
+  SearchResultScreenState(this.searchedText, this.hits);
+  final String searchedText;
+  final Future<List<Hits>> hits;
 
   @override
   void initState() {
@@ -52,7 +61,7 @@ class SearchResultScreenState extends State<SearchResultScreen> {
               ),
               Expanded(
                 child: Text(
-                  'The Searched Text',
+                  searchedText,
                   style: TextStyle(
                       //color: Colors.white,
                       color: Color.fromRGBO(250, 74, 12, 1),
@@ -128,31 +137,6 @@ class SearchResultScreenState extends State<SearchResultScreen> {
               ),
             ),
           ),
-          Card(
-            color: Colors.white,
-            child: Padding(
-              padding: EdgeInsets.all(200),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text('Calories:'),
-                      ),
-                      RawMaterialButton(
-                        onPressed: () {},
-                        padding: EdgeInsets.all(15.0),
-                        shape: CircleBorder(),
-                        elevation: 2.0,
-                        fillColor: Color.fromRGBO(111, 207, 151, 1),
-                        child: Icon(Icons.arrow_back),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          )
         ],
       ),
     );

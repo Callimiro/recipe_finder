@@ -8,15 +8,15 @@ class Recipe {
   String source;
   String url;
   String shareAs;
-  int yield;
-  List<Null> dietLabels;
+  double yield;
+  List<String> dietLabels;
   List<String> healthLabels;
   List<String> cautions;
   List<String> ingredientLines;
   List<Ingredients> ingredients;
   double calories;
   double totalWeight;
-  int totalTime;
+  double totalTime;
   TotalNutrients totalNutrients;
   TotalNutrients totalDaily;
 

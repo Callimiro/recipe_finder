@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:recipe_finder/Recipe_model.dart';
+import 'package:recipe_finder/Hit_model.dart';
 import 'package:recipe_finder/advanced_search_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_finder/search_result_screen.dart';
@@ -38,11 +42,21 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    Future<http.Response> searcheByName(String recipeName) {
-      return http.get("https://api.edamam.com/search?q=" +
+    TextEditingController nameController = new TextEditingController();
+
+    List<Hits> parseRecipes(String responseBody) {
+      final parsed = json.decode(responseBody)['hits'];
+      print(parsed);
+      return parsed.map<Hits>((json) => Hits.fromJson(json)).toList();
+    }
+
+    Future<List<Hits>> searcheByName(String recipeName) async {
+      final response = await http.get("https://api.edamam.com/search?q=" +
           recipeName +
           "&app_id=bd7ed852&app_key=cab16ce1c8007b3fb8bef286f306426b");
-
+      List<Hits> hits = parseRecipes(response.body);
+      print('the size of the list is ' + hits.length.toString());
+      return hits;
     }
 
     // This method is rerun every time setState is called, for instance as done
@@ -97,6 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     left: screenWidth * 6.8 / 100,
                     right: screenWidth * 6.8 / 100),
                 child: TextField(
+                  controller: nameController,
                   style: TextStyle(fontSize: 18),
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(10),
@@ -136,14 +151,24 @@ class _MyHomePageState extends State<MyHomePage> {
                                       top: 15, bottom: 15, left: 10, right: 10),
                                   color: Color.fromRGBO(250, 74, 12, 1),
                                   onPressed: () {
-                                    var searchText="";
-                                    var response = searcheByName(searchText);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SearchResultScreen(
-                                                    searchResultBloc: null)));
+                                    if (nameController.text != '') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SearchResultScreen(
+                                                      searchResultBloc: null,
+                                                      searchedRecipe:
+                                                          nameController.text,
+                                                      hits: searcheByName(
+                                                          nameController
+                                                              .text))));
+                                    } else {
+                                      Scaffold.of(context).showSnackBar(
+                                          new SnackBar(
+                                              content: new Text(
+                                                  'Please insert a recipe to search')));
+                                    }
                                   }),
                             ),
                             Container(
