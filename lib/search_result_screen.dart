@@ -44,9 +44,9 @@ class SearchResultScreenState extends State<SearchResultScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-        //backgroundColor: Color.fromRGBO(250, 74, 12, 1),
         backgroundColor: Color.fromRGBO(242, 242, 242, 1),
+        //backgroundColor: Color.fromRGBO(250, 74, 12, 1),
+
         body: SafeArea(
           child: SingleChildScrollView(
             physics: ScrollPhysics(),
@@ -55,8 +55,11 @@ class SearchResultScreenState extends State<SearchResultScreen> {
                 Row(
                   children: [
                     RawMaterialButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                       padding: EdgeInsets.all(15.0),
+
                       shape: CircleBorder(),
                       elevation: 2.0,
                       fillColor: Color.fromRGBO(250, 74, 12, 1),
